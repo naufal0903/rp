@@ -5,48 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misteri Hati ❤️</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Georgia', serif;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Georgia', serif; }
+
         body {
-            background: #0c0c0c url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230c0c0c"/><path d="M0 0L100 100M100 0L0 100" stroke="%231a1a1a" stroke-width="1"/></svg>');
+            background: #080305;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: #e0d3c8;
             overflow-x: hidden;
+            position: relative;
         }
-        
+
+        /* Nebula latar — merah tua & amber */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 25%, rgba(180, 40, 0, 0.2) 0%, transparent 45%),
+                radial-gradient(ellipse at 80% 70%, rgba(160, 100, 0, 0.16) 0%, transparent 45%),
+                radial-gradient(ellipse at 50% 50%, rgba(120, 0, 20, 0.1) 0%, transparent 55%),
+                radial-gradient(ellipse at 10% 85%, rgba(180, 60, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 10%, rgba(140, 90, 0, 0.12) 0%, transparent 40%);
+            animation: nebulaShift 20s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes nebulaShift {
+            0%   { opacity: 0.7; transform: scale(1); }
+            50%  { opacity: 1;   transform: scale(1.04); }
+            100% { opacity: 0.7; transform: scale(1) rotate(-1deg); }
+        }
+
         .container {
             width: 100%;
             max-width: 800px;
-            background: rgba(20, 15, 25, 0.85);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(180, 70, 120, 0.3);
-            overflow: hidden;
+            background: rgba(10, 4, 6, 0.93);
+            border-radius: 20px;
+            overflow: visible;
             position: relative;
-            border: 1px solid rgba(180, 70, 120, 0.2);
-            backdrop-filter: blur(5px);
+            z-index: 1;
+            box-shadow:
+                0 0 0 1px rgba(180, 120, 20, 0.4),
+                0 0 40px rgba(180, 80, 0, 0.22),
+                0 0 80px rgba(160, 30, 40, 0.15),
+                0 0 130px rgba(120, 60, 0, 0.1);
+            clip-path: none;
         }
-        
+
+        /* Border emas berkilau */
+        .container::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 21px;
+            background: linear-gradient(45deg,
+                #cc8800, #ffcc00, #ff6600, #cc2200,
+                #880022, #cc4400, #ffaa00, #cc8800);
+            background-size: 400% 400%;
+            z-index: -1;
+            animation: goldBorder 9s linear infinite;
+            opacity: 0.45;
+        }
+
+        @keyframes goldBorder {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Inner glow */
         .container::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(180, 70, 120, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 70%, rgba(120, 40, 180, 0.1) 0%, transparent 50%);
+            inset: 0;
+            border-radius: 20px;
+            background:
+                radial-gradient(circle at 25% 20%, rgba(200, 100, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 75% 80%, rgba(160, 20, 30, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 55% 5%,  rgba(180, 130, 0, 0.07) 0%, transparent 35%);
             pointer-events: none;
+            z-index: 0;
         }
-        
+
+        /* Tombol musik */
+        #music-toggle {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(220, 160, 30, 0.55);
+            background: rgba(140, 80, 0, 0.35);
+            color: #ffcc44;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 0 8px rgba(200, 140, 0, 0.3);
+        }
+        #music-toggle:hover {
+            background: rgba(180, 100, 0, 0.55);
+            box-shadow: 0 0 16px rgba(220, 160, 0, 0.55);
+        }
+        #music-toggle.muted { color: rgba(180, 120, 0, 0.38); border-color: rgba(160, 100, 0, 0.3); }
+
         .screen {
             padding: 40px;
             display: none;
@@ -56,647 +126,715 @@
             min-height: 500px;
             position: relative;
             z-index: 1;
+            overflow: hidden;
+            border-radius: 20px;
         }
-        
-        .active {
-            display: flex;
-        }
-        
+        .active { display: flex; }
+
         h1 {
-            color: #e0d3c8;
             margin-bottom: 20px;
             font-size: 2.8rem;
-            text-shadow: 0 0 10px rgba(180, 70, 120, 0.7);
-            letter-spacing: 2px;
             font-weight: normal;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #ffcc44, #ff9933, #ffee88, #cc4400, #ffcc44);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 6s ease infinite;
+            filter: drop-shadow(0 0 12px rgba(200, 120, 0, 0.7));
         }
-        
+
         h2 {
-            color: #e0d3c8;
             margin-bottom: 15px;
             font-size: 2rem;
-            text-shadow: 0 0 8px rgba(180, 70, 120, 0.5);
             font-weight: normal;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffaa44, #ff6633, #ffdd88, #cc3300);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 7s ease infinite reverse;
+            filter: drop-shadow(0 0 8px rgba(200, 100, 0, 0.5));
         }
-        
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         p {
-            color: #c9b8a5;
+            color: #e8d5b8;
             margin-bottom: 20px;
-            line-height: 1.6;
+            line-height: 1.7;
             font-size: 1.1rem;
             max-width: 600px;
         }
-        
+
         .mysterious-text {
             font-style: italic;
-            color: #d4a798;
-            text-shadow: 0 0 5px rgba(180, 70, 120, 0.3);
-            border-left: 2px solid rgba(180, 70, 120, 0.5);
+            color: #ffbb44;
+            text-shadow: 0 0 8px rgba(255, 160, 30, 0.6), 0 0 22px rgba(200, 100, 0, 0.3);
+            border-left: 3px solid #cc7700;
             padding-left: 15px;
             margin: 15px 0;
         }
-        
+
         .btn {
-            background: linear-gradient(to right, #582a4d, #8c456c);
-            color: #e0d3c8;
+            color: #fff0d8;
             border: none;
-            padding: 12px 30px;
+            padding: 13px 32px;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.35s ease;
             margin: 10px;
-            box-shadow: 0 0 15px rgba(180, 70, 120, 0.4);
             letter-spacing: 1px;
             position: relative;
             overflow: hidden;
+            background: linear-gradient(135deg, #8a0020, #cc2244, #ff4466, #cc2244, #8a0020);
+            background-size: 300% 300%;
+            animation: btnGradient 5s ease infinite;
+            box-shadow: 0 4px 18px rgba(160, 20, 40, 0.5), 0 0 30px rgba(200, 80, 0, 0.15);
         }
-        
+
+        @keyframes btnGradient {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,220,150,0.25), transparent);
+            transition: 0.45s;
         }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
+        .btn:hover::before { left: 100%; }
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px rgba(180, 70, 120, 0.6);
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 8px 28px rgba(180, 30, 50, 0.65), 0 0 50px rgba(200, 100, 0, 0.25);
         }
-        
-        .btn-secondary {
-            background: linear-gradient(to right, #3a2a45, #5a3a65);
+
+        .no-btn-moving {
+            position: relative;
+            transition: all 0.1s ease;
+            background: linear-gradient(135deg, #3a3a3a, #666, #444) !important;
         }
-        
+
         .game-container {
             width: 100%;
             max-width: 500px;
             margin: 20px auto;
-            background: rgba(30, 20, 35, 0.7);
+            background: rgba(10, 4, 6, 0.85);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 0 20px rgba(120, 40, 180, 0.3);
-            border: 1px solid rgba(180, 70, 120, 0.2);
+            box-shadow: 0 0 28px rgba(160, 60, 0, 0.3);
+            border: 1px solid rgba(160, 100, 20, 0.35);
         }
-        
+
         .game-area {
             position: relative;
             height: 300px;
-            background: rgba(15, 10, 20, 0.8);
+            background: radial-gradient(ellipse at center, rgba(20, 6, 8, 0.92) 0%, rgba(5, 3, 4, 0.97) 100%);
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 20px;
-            border: 1px solid rgba(180, 70, 120, 0.3);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(160, 80, 20, 0.4);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.6), inset 0 0 60px rgba(100,20,0,0.2);
         }
-        
+
         .target {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #8c456c, #582a4d);
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #e0d3c8;
-            font-weight: bold;
-            transition: transform 0.2s;
-            box-shadow: 0 0 15px rgba(180, 70, 120, 0.7);
-            border: 1px solid rgba(220, 160, 180, 0.3);
-            animation: pulse 2s infinite;
+            font-size: 1.3rem;
+            border: 2px solid rgba(255, 220, 150, 0.25);
+            animation: targetPulse 1.6s ease-in-out infinite;
         }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px rgba(180, 70, 120, 0.7); }
-            50% { box-shadow: 0 0 20px rgba(180, 70, 120, 0.9); }
-            100% { box-shadow: 0 0 10px rgba(180, 70, 120, 0.7); }
+        @keyframes targetPulse {
+            0%,100% { transform: scale(1); }
+            50%      { transform: scale(1.18); }
         }
-        
-        .target:hover {
-            transform: scale(1.1);
-        }
-        
+        .target:hover { transform: scale(1.3) !important; }
+
         .game-stats {
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
-            font-size: 1.2rem;
-            color: #c9b8a5;
+            font-size: 1.1rem;
         }
-        
+        .stat-time  { color: #ffaa44; text-shadow: 0 0 8px rgba(220,130,0,0.6); }
+        .stat-score { color: #ff6688; text-shadow: 0 0 8px rgba(220,50,80,0.6); }
+
         .result-message {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin: 20px 0;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 12px;
             width: 100%;
-            background: rgba(30, 20, 35, 0.7);
-            border: 1px solid rgba(180, 70, 120, 0.3);
+            background: rgba(10, 4, 6, 0.75);
+            border: 1px solid rgba(160, 100, 20, 0.35);
+            line-height: 1.7;
         }
-        
         .win {
-            color: #a8d5a2;
-            text-shadow: 0 0 5px rgba(100, 200, 100, 0.5);
+            background: linear-gradient(135deg, #ffcc44, #ff9933, #ffee88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(200,150,0,0.4));
         }
-        
         .lose {
-            color: #d5a2a2;
-            text-shadow: 0 0 5px rgba(200, 100, 100, 0.5);
+            background: linear-gradient(135deg, #ffaa88, #ff7755, #ffccaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(200,100,50,0.4));
         }
-        
+
         .heart {
-            color: #b44678;
             font-size: 2rem;
             margin: 0 5px;
-            animation: heartbeat 1.5s infinite;
-            text-shadow: 0 0 10px rgba(180, 70, 120, 0.7);
+            display: inline-block;
+            animation: heartbeat 1.4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(220, 40, 80, 0.9));
         }
-        
         @keyframes heartbeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0%,100% { transform: scale(1); }
+            20%      { transform: scale(1.3); }
+            35%      { transform: scale(1.1); }
+            55%      { transform: scale(1.35); }
+            80%      { transform: scale(1.05); }
         }
-        
-        .confetti {
+
+        .confetti-piece {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #b44678;
-            opacity: 0.7;
+            pointer-events: none;
         }
-        
+
         .proposal {
-            margin: 30px 0;
-            padding: 25px;
-            background: rgba(30, 20, 35, 0.7);
+            margin: 25px 0;
+            padding: 28px 30px;
+            background: rgba(12, 5, 7, 0.82);
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(180, 70, 120, 0.3);
             width: 100%;
-            border: 1px solid rgba(180, 70, 120, 0.3);
+            border: 1px solid rgba(180, 80, 20, 0.35);
             position: relative;
+            box-shadow: 0 0 28px rgba(180, 50, 10, 0.1), inset 0 0 30px rgba(80, 10, 10, 0.07);
         }
-        
         .proposal::before {
             content: '"';
             position: absolute;
-            top: -20px;
-            left: 20px;
-            font-size: 5rem;
-            color: rgba(180, 70, 120, 0.3);
+            top: -28px; left: 18px;
+            font-size: 6.5rem;
+            background: linear-gradient(135deg, #ffcc44, #cc7700, #ff9933);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-family: serif;
+            opacity: 0.5;
+            line-height: 1;
         }
-        
+
         .response-buttons {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             margin-top: 20px;
         }
-        
+
         .final-message {
-            font-size: 1.5rem;
-            margin: 30px 0;
+            font-size: 1.25rem;
+            margin: 25px 0;
             padding: 25px;
             border-radius: 15px;
-            background: rgba(30, 20, 35, 0.7);
+            background: rgba(12, 5, 7, 0.82);
             width: 100%;
-            border: 1px solid rgba(180, 70, 120, 0.3);
+            border: 1px solid rgba(160, 100, 20, 0.35);
         }
-        
-        .moon {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #e0d3c8, #c9b8a5);
-            box-shadow: 0 0 30px #e0d3c8;
-            top: -50px;
-            right: -50px;
-            opacity: 0.1;
-        }
-        
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
+
+        /* Bintang warna hangat */
+        .stars { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
         .star {
             position: absolute;
-            background-color: #e0d3c8;
             border-radius: 50%;
-            animation: twinkle 5s infinite;
+            animation: twinkle var(--dur, 4s) ease-in-out infinite var(--del, 0s);
         }
-        
         @keyframes twinkle {
-            0% { opacity: 0.2; }
-            50% { opacity: 1; }
-            100% { opacity: 0.2; }
+            0%,100% { opacity: 0.1; transform: scale(1); }
+            50%      { opacity: 1;   transform: scale(1.7); }
         }
-        
-        .no-btn-moving {
-            position: relative;
-            transition: all 0.1s ease;
+
+        /* Orb mengambang */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(55px);
+            opacity: 0.16;
+            animation: floatOrb var(--dur, 16s) ease-in-out infinite var(--del, 0s);
+            pointer-events: none;
         }
-        
+        @keyframes floatOrb {
+            0%,100% { transform: translate(0, 0); }
+            25%      { transform: translate(18px, -16px); }
+            50%      { transform: translate(-16px, 20px); }
+            75%      { transform: translate(10px, 26px); }
+        }
+
         @media (max-width: 600px) {
-            .container {
-                border-radius: 10px;
-            }
-            
-            .screen {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            h2 {
-                font-size: 1.5rem;
-            }
-            
-            .game-container {
-                padding: 15px;
-            }
-            
-            .game-area {
-                height: 250px;
-            }
-            
-            .response-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
+            .container { border-radius: 15px; }
+            .screen { padding: 20px; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .game-container { padding: 15px; }
+            .game-area { height: 250px; }
+            .response-buttons { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="moon"></div>
         <div class="stars" id="stars-container"></div>
-        
+
+        <!-- Orb dekorasi -->
+        <div class="orb" style="width:230px;height:230px;background:#cc5500;top:-70px;left:-70px;--dur:18s;--del:0s;"></div>
+        <div class="orb" style="width:180px;height:180px;background:#880011;bottom:-55px;right:-55px;--dur:22s;--del:4s;"></div>
+        <div class="orb" style="width:150px;height:150px;background:#aa7700;top:40%;right:-45px;--dur:16s;--del:7s;"></div>
+        <div class="orb" style="width:120px;height:120px;background:#993300;bottom:30%;left:-35px;--dur:20s;--del:10s;"></div>
+
+        <!-- Tombol musik -->
+        <button id="music-toggle" title="Toggle Musik">♫</button>
+
         <!-- Layar Pembuka -->
         <div id="welcome-screen" class="screen active">
             <h1>Misteri Hati <span class="heart">❤️</span></h1>
             <p class="mysterious-text">Di bawah sinar rembulan, ada rahasia yang ingin kuungkapkan...</p>
             <p>Sebelum kita masuk ke dalam misteri ini, ijinkan aku mengajakmu bermain sebentar.</p>
             <p>Temukan hatiku yang tersembunyi dalam kegelapan.</p>
-            <button id="start-game" class="btn">Masuk ke Misteri</button>
+            <button id="start-game" class="btn">✨ Masuk ke Misteri</button>
         </div>
-        
+
         <!-- Layar Game -->
         <div id="game-screen" class="screen">
             <h2>Permainan Hati</h2>
             <div class="game-stats">
-                <div>Waktu: <span id="time-left">30</span>s</div>
-                <div>Hati Ditemukan: <span id="score">0</span></div>
+                <div class="stat-time">⏳ Waktu: <span id="time-left">30</span>s</div>
+                <div class="stat-score">💖 Ditemukan: <span id="score">0</span></div>
             </div>
             <div class="game-container">
-                <div id="game-area" class="game-area">
-                    <!-- Target akan muncul di sini secara dinamis -->
-                </div>
+                <div id="game-area" class="game-area"></div>
             </div>
             <p class="mysterious-text">Setiap hati yang kau temukan membawamu lebih dekat pada rahasiaku...</p>
         </div>
-        
-        <!-- Layar Hasil Game -->
+
+        <!-- Layar Hasil -->
         <div id="result-screen" class="screen">
             <h2>Rahasia Terungkap</h2>
             <div id="result-message" class="result-message"></div>
             <p class="mysterious-text">Kini saatnya kuungkapkan isi hatiku yang sesungguhnya...</p>
-            <button id="continue-btn" class="btn">Buka Rahasia</button>
+            <button id="continue-btn" class="btn">🌟 Buka Rahasia</button>
         </div>
-        
+
         <!-- Layar Pertanyaan -->
         <div id="proposal-screen" class="screen">
             <h2>Pertanyaan dari Hati</h2>
             <div class="proposal">
                 <p>Di bawah bintang-bintang yang bersinar, dengan hati yang berdebar...</p>
                 <p>Setiap detik bersamamu adalah anugerah, dan aku ingin itu berlangsung selamanya.</p>
-                <p>Maukah kamu menjadi pacarku?</p>
+                <p>Maukah kamu menjadi pacarku? 🌙</p>
             </div>
             <div class="response-buttons">
-                <button id="yes-btn" class="btn">Ya, dengan senang hati</button>
+                <button id="yes-btn" class="btn">💖 Ya, dengan senang hati</button>
                 <button id="no-btn" class="btn no-btn-moving">Tidak</button>
             </div>
         </div>
-        
-        <!-- Layar Jawaban Ya -->
+
+        <!-- Layar Ya -->
         <div id="yes-screen" class="screen">
             <h2>Terima Kasih <span class="heart">❤️</span></h2>
             <div class="final-message">
                 <p>Kau telah menerima hatiku yang paling dalam.</p>
                 <p>Ini adalah awal dari cerita indah kita bersama.</p>
-                <p class="mysterious-text">Aku berjanji akan menjagamu sepenuh hati...</p>
+                <p class="mysterious-text">Aku berjanji akan menjagamu sepenuh hati... ✨</p>
             </div>
-            <button id="restart-btn" class="btn">Kembali ke Awal</button>
+            <button id="restart-btn" class="btn">🌸 Kembali ke Awal</button>
         </div>
-        
-        <!-- Layar Jawaban Tidak -->
+
+        <!-- Layar Tidak -->
         <div id="no-screen" class="screen">
             <h2>Hatiku Sedih <span class="heart">💔</span></h2>
             <div class="final-message">
                 <p>Aku menghormati keputusanmu, meski hatiku terluka.</p>
-                <p class="mysterious-text">Tapi mungkin kau bisa mempertimbangkannya sekali lagi?</p>
+                <p class="mysterious-text">Tapi mungkin kau bisa mempertimbangkannya sekali lagi? 🌙</p>
             </div>
-            <button id="back-to-proposal-btn" class="btn">Pertimbangkan Kembali</button>
+            <button id="back-to-proposal-btn" class="btn">🌟 Pertimbangkan Kembali</button>
         </div>
     </div>
 
     <script>
-        // Elemen DOM
-        const screens = document.querySelectorAll('.screen');
-        const startGameBtn = document.getElementById('start-game');
-        const continueBtn = document.getElementById('continue-btn');
-        const yesBtn = document.getElementById('yes-btn');
-        const noBtn = document.getElementById('no-btn');
-        const restartBtn = document.getElementById('restart-btn');
+        // ─── DOM ──────────────────────────────────────────────
+        const screens           = document.querySelectorAll('.screen');
+        const startGameBtn      = document.getElementById('start-game');
+        const continueBtn       = document.getElementById('continue-btn');
+        const yesBtn            = document.getElementById('yes-btn');
+        const noBtn             = document.getElementById('no-btn');
+        const restartBtn        = document.getElementById('restart-btn');
         const backToProposalBtn = document.getElementById('back-to-proposal-btn');
-        
-        const gameArea = document.getElementById('game-area');
-        const timeLeftEl = document.getElementById('time-left');
-        const scoreEl = document.getElementById('score');
-        const resultMessage = document.getElementById('result-message');
-        const starsContainer = document.getElementById('stars-container');
-        const noBtnMoving = document.querySelector('.no-btn-moving');
-        
-        // Variabel game
-        let score = 0;
-        let timeLeft = 30;
-        let gameInterval;
-        let targetInterval;
-        
-        // Buat bintang-bintang
+        const gameArea          = document.getElementById('game-area');
+        const timeLeftEl        = document.getElementById('time-left');
+        const scoreEl           = document.getElementById('score');
+        const resultMessage     = document.getElementById('result-message');
+        const starsContainer    = document.getElementById('stars-container');
+        const noBtnMoving       = document.querySelector('.no-btn-moving');
+        const musicToggle       = document.getElementById('music-toggle');
+
+        // ─── GAME STATE ───────────────────────────────────────
+        let score = 0, timeLeft = 30, gameInterval, targetInterval;
+
+        const targetThemes = [
+            { bg: 'radial-gradient(circle, #ff3355, #880022)', glow: 'rgba(255,50,80,0.85)' },
+            { bg: 'radial-gradient(circle, #ff9944, #aa4400)', glow: 'rgba(255,160,50,0.85)' },
+            { bg: 'radial-gradient(circle, #ffcc22, #aa7700)', glow: 'rgba(255,210,30,0.85)' },
+            { bg: 'radial-gradient(circle, #ff6699, #880033)', glow: 'rgba(255,100,140,0.85)' },
+            { bg: 'radial-gradient(circle, #ff4422, #aa1100)', glow: 'rgba(255,80,30,0.85)'  },
+            { bg: 'radial-gradient(circle, #ffaa55, #cc6600)', glow: 'rgba(255,180,60,0.85)' },
+        ];
+
+        const starColors = [
+            '#ffe8b0','#ffcc66','#ffaa44','#ff9966',
+            '#ffe0a0','#fff5cc','#ffd090','#ffddaa',
+        ];
+
+        const confettiColors = [
+            '#ffcc00','#ff8800','#ff3344','#cc0022',
+            '#ff6688','#ffaa33','#eecc44','#ff4466',
+            '#ffdd88','#cc3344','#ff9933','#ee6600',
+        ];
+
+        // ─── BINTANG ──────────────────────────────────────────
         function createStars() {
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
+            for (let i = 0; i < 110; i++) {
+                const star  = document.createElement('div');
                 star.className = 'star';
-                
-                const size = Math.random() * 3;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                
+                const size  = Math.random() * 3 + 0.5;
+                const color = starColors[Math.floor(Math.random() * starColors.length)];
+                star.style.cssText = `
+                    width:${size}px; height:${size}px; background:${color};
+                    left:${Math.random()*100}%; top:${Math.random()*100}%;
+                    box-shadow:0 0 ${size*3}px ${color};
+                    --dur:${(3+Math.random()*5).toFixed(1)}s;
+                    --del:${(Math.random()*6).toFixed(1)}s;
+                `;
                 starsContainer.appendChild(star);
             }
         }
-        
-        // Fungsi untuk mengubah layar
-        function showScreen(screenId) {
-            screens.forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
+
+        // ─── LAYAR ────────────────────────────────────────────
+        function showScreen(id) {
+            screens.forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
-        
-        // Fungsi untuk memulai game
+
+        // ─── GAME ─────────────────────────────────────────────
         function startGame() {
             showScreen('game-screen');
-            score = 0;
-            timeLeft = 30;
-            scoreEl.textContent = score;
-            timeLeftEl.textContent = timeLeft;
-            
-            // Bersihkan area game
+            score = 0; timeLeft = 30;
+            scoreEl.textContent = 0;
+            timeLeftEl.textContent = 30;
+            timeLeftEl.style.color = '';
             gameArea.innerHTML = '';
-            
-            // Mulai timer
+
             gameInterval = setInterval(() => {
                 timeLeft--;
                 timeLeftEl.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    endGame();
-                }
+                if (timeLeft <= 10) timeLeftEl.style.color = '#ff4444';
+                if (timeLeft <= 0) endGame();
             }, 1000);
-            
-            // Buat target secara berkala
-            targetInterval = setInterval(createTarget, 800);
+
+            targetInterval = setInterval(createTarget, 780);
         }
-        
-        // Fungsi untuk membuat target
+
         function createTarget() {
             const target = document.createElement('div');
             target.className = 'target';
+            const theme = targetThemes[Math.floor(Math.random() * targetThemes.length)];
             target.innerHTML = '❤️';
-            
-            // Posisi acak
-            const maxX = gameArea.offsetWidth - 60;
+            target.style.background = theme.bg;
+            target.style.boxShadow  = `0 0 14px ${theme.glow}`;
+
+            const maxX = gameArea.offsetWidth  - 60;
             const maxY = gameArea.offsetHeight - 60;
             const x = Math.floor(Math.random() * maxX);
             const y = Math.floor(Math.random() * maxY);
-            
-            target.style.left = `${x}px`;
-            target.style.top = `${y}px`;
-            
-            // Event klik
+            target.style.left = x + 'px';
+            target.style.top  = y + 'px';
+
             target.addEventListener('click', () => {
                 score++;
                 scoreEl.textContent = score;
+                createExplosion(x + 27, y + 27, theme.glow);
                 target.remove();
-                createExplosion(x + 30, y + 30); // Efek ledakan di tengah target
             });
-            
+
             gameArea.appendChild(target);
-            
-            // Hapus target setelah 2 detik
-            setTimeout(() => {
-                if (target.parentNode) {
-                    target.remove();
-                }
-            }, 2000);
+            setTimeout(() => { if (target.parentNode) target.remove(); }, 2200);
         }
-        
-        // Fungsi untuk efek ledakan
-        function createExplosion(x, y) {
-            for (let i = 0; i < 10; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'confetti';
-                
-                // Warna acak
-                const colors = ['#b44678', '#8c456c', '#d44a7a', '#a8356a', '#c2527e'];
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Posisi awal
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
-                
-                // Animasi
+
+        function createExplosion(x, y, glowColor) {
+            for (let i = 0; i < 14; i++) {
+                const p = document.createElement('div');
+                p.style.cssText = `
+                    position:absolute; width:7px; height:7px; border-radius:50%;
+                    left:${x}px; top:${y}px; pointer-events:none;
+                    background:${confettiColors[Math.floor(Math.random()*confettiColors.length)]};
+                    box-shadow:0 0 5px ${glowColor};
+                `;
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = 2 + Math.random() * 3;
-                const vx = Math.cos(angle) * velocity;
-                const vy = Math.sin(angle) * velocity;
-                
-                gameArea.appendChild(particle);
-                
-                let posX = x;
-                let posY = y;
-                let opacity = 1;
-                
-                const animateParticle = () => {
-                    posX += vx;
-                    posY += vy;
-                    opacity -= 0.02;
-                    
-                    particle.style.left = `${posX}px`;
-                    particle.style.top = `${posY}px`;
-                    particle.style.opacity = opacity;
-                    
-                    if (opacity > 0) {
-                        requestAnimationFrame(animateParticle);
-                    } else {
-                        particle.remove();
-                    }
+                const speed = 2.5 + Math.random() * 3.5;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                gameArea.appendChild(p);
+                let px = x, py = y, op = 1;
+                const tick = () => {
+                    px += vx; py += vy; op -= 0.026;
+                    p.style.left    = px + 'px';
+                    p.style.top     = py + 'px';
+                    p.style.opacity = op;
+                    if (op > 0) requestAnimationFrame(tick); else p.remove();
                 };
-                
-                requestAnimationFrame(animateParticle);
+                requestAnimationFrame(tick);
             }
         }
-        
-        // Fungsi untuk mengakhiri game
+
         function endGame() {
             clearInterval(gameInterval);
             clearInterval(targetInterval);
-            
-            // Tampilkan hasil
             showScreen('result-screen');
-            
-            // Tentukan pesan berdasarkan skor
-            let message = '';
-            if (score >= 20) {
-                message = `<div class="win">Luar biasa! Kau menemukan ${score} hatiku! Kau benar-benar memahami isi hatiku.</div>`;
-            } else if (score >= 10) {
-                message = `<div class="win">Bagus! Kau menemukan ${score} hatiku. Kau mulai mengenal diriku.</div>`;
-            } else if (score >= 5) {
-                message = `<div class="lose">Kau menemukan ${score} hatiku. Masih ada rahasia yang tersembunyi.</div>`;
-            } else {
-                message = `<div class="lose">Hanya ${score} hatiku yang kau temukan. Misteriku masih tersembunyi.</div>`;
-            }
-            
-            resultMessage.innerHTML = message;
+            let msg = '';
+            if (score >= 20)
+                msg = `<div class="win">✨ Luar biasa! Kau menemukan ${score} hatiku!<br>Kau benar-benar memahami isi hatiku. 💖</div>`;
+            else if (score >= 10)
+                msg = `<div class="win">🌟 Bagus! Kau menemukan ${score} hatiku.<br>Kau mulai mengenal diriku. 🌸</div>`;
+            else if (score >= 5)
+                msg = `<div class="lose">🌙 Kau menemukan ${score} hatiku.<br>Masih ada rahasia yang tersembunyi... 🔮</div>`;
+            else
+                msg = `<div class="lose">💫 Hanya ${score} hatiku yang kau temukan.<br>Misteriku masih belum terkuak... ✨</div>`;
+            resultMessage.innerHTML = msg;
         }
-        
-        // Fungsi untuk membuat tombol "Tidak" bergerak
+
+        // ─── TOMBOL TIDAK KABUR ───────────────────────────────
         function moveNoButton() {
-            if (noBtnMoving) {
-                const container = document.querySelector('.container');
-                const containerRect = container.getBoundingClientRect();
-                const btnRect = noBtnMoving.getBoundingClientRect();
-                
-                const maxX = containerRect.width - btnRect.width - 40;
-                const maxY = containerRect.height - btnRect.height - 40;
-                
-                const randomX = Math.floor(Math.random() * maxX);
-                const randomY = Math.floor(Math.random() * maxY);
-                
-                noBtnMoving.style.position = 'absolute';
-                noBtnMoving.style.left = `${randomX}px`;
-                noBtnMoving.style.top = `${randomY}px`;
-            }
+            if (!noBtnMoving) return;
+            const c = document.querySelector('.container').getBoundingClientRect();
+            const b = noBtnMoving.getBoundingClientRect();
+            noBtnMoving.style.position = 'absolute';
+            noBtnMoving.style.left = Math.floor(Math.random() * (c.width  - b.width  - 40)) + 'px';
+            noBtnMoving.style.top  = Math.floor(Math.random() * (c.height - b.height - 40)) + 'px';
         }
-        
-        // Event Listeners
-        startGameBtn.addEventListener('click', startGame);
-        
-        continueBtn.addEventListener('click', () => {
-            showScreen('proposal-screen');
-        });
-        
-        yesBtn.addEventListener('click', () => {
-            showScreen('yes-screen');
-            createConfetti();
-        });
-        
-        noBtn.addEventListener('click', () => {
-            showScreen('no-screen');
-        });
-        
-        noBtnMoving.addEventListener('mouseover', moveNoButton);
-        noBtnMoving.addEventListener('touchstart', moveNoButton);
-        
-        restartBtn.addEventListener('click', () => {
-            showScreen('welcome-screen');
-        });
-        
-        backToProposalBtn.addEventListener('click', () => {
-            showScreen('proposal-screen');
-        });
-        
-        // Fungsi untuk efek konfeti
+
+        // ─── KONFETI ─────────────────────────────────────────
         function createConfetti() {
             const container = document.querySelector('.container');
-            const colors = ['#b44678', '#8c456c', '#d44a7a', '#a8356a', '#c2527e'];
-            
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                
-                // Warna acak
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Posisi acak di atas layar
-                confetti.style.left = `${Math.random() * 100}%`;
-                confetti.style.top = `-10px`;
-                
-                // Ukuran acak
-                const size = Math.random() * 10 + 5;
-                confetti.style.width = `${size}px`;
-                confetti.style.height = `${size}px`;
-                
-                // Rotasi acak
-                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
-                container.appendChild(confetti);
-                
-                // Animasi jatuh
-                const duration = Math.random() * 3 + 2;
-                const delay = Math.random() * 2;
-                
-                confetti.style.animation = `fall ${duration}s linear ${delay}s forwards`;
-                
-                // Hapus confetti setelah animasi selesai
-                setTimeout(() => {
-                    confetti.remove();
-                }, (duration + delay) * 1000);
-            }
-            
-            // Tambahkan CSS untuk animasi jatuh
             if (!document.querySelector('#confetti-style')) {
-                const style = document.createElement('style');
-                style.id = 'confetti-style';
-                style.textContent = `
-                    @keyframes fall {
-                        to {
-                            transform: translateY(100vh) rotate(360deg);
-                            opacity: 0;
-                        }
+                const s = document.createElement('style');
+                s.id = 'confetti-style';
+                s.textContent = `
+                    @keyframes confettiFall {
+                        0%   { opacity:1; }
+                        90%  { opacity:0.8; }
+                        100% { transform:translateY(110vh) rotate(720deg) scale(0.4); opacity:0; }
                     }
                 `;
-                document.head.appendChild(style);
+                document.head.appendChild(s);
+            }
+            for (let i = 0; i < 130; i++) {
+                const c    = document.createElement('div');
+                c.className = 'confetti-piece';
+                const size  = Math.random() * 10 + 5;
+                const circle = Math.random() > 0.5;
+                const color  = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                const dur    = (2 + Math.random() * 3).toFixed(2);
+                const delay  = (Math.random() * 2.5).toFixed(2);
+                c.style.cssText = `
+                    width:${size}px; height:${circle ? size : size*0.45}px;
+                    border-radius:${circle ? '50%' : '2px'};
+                    background:${color}; box-shadow:0 0 5px ${color};
+                    left:${Math.random()*100}%; top:-12px;
+                    animation:confettiFall ${dur}s linear ${delay}s forwards;
+                `;
+                container.appendChild(c);
+                setTimeout(() => c.remove(), (parseFloat(dur) + parseFloat(delay) + 0.5) * 1000);
             }
         }
-        
-        // Inisialisasi
+
+        // ─── MUSIK (Web Audio API) ─────────────────────────────
+        let audioCtx    = null;
+        let masterGain  = null;
+        let musicOn     = false;
+        let loopTimeout = null;
+
+        // Tempo lambat & romantis
+        const BPM  = 66;
+        const BEAT = 60 / BPM; // ~0.909 detik per ketukan
+
+        // Melodi A minor: Am – F – C – G
+        // [frekuensi Hz, durasi dalam ketukan]  (0 = istirahat)
+        const MELODY = [
+            // Am
+            [659.25, 1.0], [587.33, 0.5], [523.25, 0.5],
+            [440.00, 2.0], [0, 0.5],
+            [493.88, 0.5], [523.25, 1.5], [0, 0.5],
+            // F
+            [698.46, 1.0], [659.25, 0.5], [587.33, 0.5],
+            [523.25, 2.0], [0, 0.5],
+            [440.00, 0.5], [523.25, 1.5], [0, 0.5],
+            // C
+            [523.25, 0.5], [659.25, 0.5], [783.99, 1.0],
+            [659.25, 0.5], [587.33, 0.5], [523.25, 1.5],
+            [0, 0.5], [493.88, 1.0], [0, 0.5],
+            // G
+            [587.33, 1.0], [493.88, 0.5], [392.00, 0.5],
+            [440.00, 1.0], [493.88, 0.5], [392.00, 1.5],
+            [0, 1.5],
+        ];
+
+        // Nada kord pengiring (sangat pelan, terdengar seperti pad)
+        const CHORDS = [
+            { notes: [110.00, 164.81, 220.00], beats: 7.5  }, // Am
+            { notes: [ 87.31, 130.81, 174.61], beats: 7.5  }, // F
+            { notes: [130.81, 196.00, 261.63], beats: 8.0  }, // C
+            { notes: [ 98.00, 146.83, 196.00], beats: 8.5  }, // G
+        ];
+
+        function playMelodyNote(freq, startTime, durationBeats) {
+            if (!audioCtx || freq <= 0) return;
+            const dur  = durationBeats * BEAT;
+            const osc  = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const env  = audioCtx.createGain();
+            const g2   = audioCtx.createGain();
+
+            osc.type  = 'sine'; osc.frequency.value  = freq;
+            osc2.type = 'sine'; osc2.frequency.value = freq * 2.002;
+            g2.gain.value = 0.09;
+
+            osc.connect(env); osc2.connect(g2); g2.connect(env);
+            env.connect(masterGain);
+
+            const t = startTime;
+            env.gain.setValueAtTime(0, t);
+            env.gain.linearRampToValueAtTime(1, t + 0.012);
+            env.gain.exponentialRampToValueAtTime(0.28, t + 0.18);
+            const rel = Math.max(dur - 0.3, 0.12);
+            env.gain.setValueAtTime(0.28, t + rel);
+            env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+            osc.start(t); osc2.start(t);
+            osc.stop(t + dur + 0.05); osc2.stop(t + dur + 0.05);
+        }
+
+        function playChordNote(freq, startTime, durationBeats) {
+            if (!audioCtx || freq <= 0) return;
+            const dur = durationBeats * BEAT;
+            const osc = audioCtx.createOscillator();
+            const env = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.value = freq;
+            osc.connect(env); env.connect(masterGain);
+
+            const t = startTime;
+            env.gain.setValueAtTime(0, t);
+            env.gain.linearRampToValueAtTime(0.22, t + 0.18);
+            env.gain.setValueAtTime(0.22, t + dur * 0.72);
+            env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+            osc.start(t); osc.stop(t + dur + 0.08);
+        }
+
+        function scheduleLoop(startTime) {
+            if (!musicOn) return;
+
+            // Jadwalkan melodi
+            let t = startTime;
+            for (const [freq, beats] of MELODY) {
+                playMelodyNote(freq, t, beats);
+                t += beats * BEAT;
+            }
+
+            // Jadwalkan kord
+            let ct = startTime;
+            for (const { notes, beats } of CHORDS) {
+                for (const freq of notes) playChordNote(freq, ct, beats);
+                ct += beats * BEAT;
+            }
+
+            // Total durasi dalam ms
+            const totalMs = MELODY.reduce((s, [, b]) => s + b, 0) * BEAT * 1000;
+            loopTimeout = setTimeout(() => scheduleLoop(audioCtx.currentTime + 0.15), totalMs - 150);
+        }
+
+        function startMusic() {
+            if (!audioCtx) {
+                audioCtx   = new (window.AudioContext || window.webkitAudioContext)();
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = 0.07;
+                masterGain.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            musicOn = true;
+            musicToggle.classList.remove('muted');
+            musicToggle.textContent = '♫';
+            scheduleLoop(audioCtx.currentTime + 0.1);
+        }
+
+        function stopMusic() {
+            musicOn = false;
+            clearTimeout(loopTimeout);
+            if (masterGain) {
+                masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
+                setTimeout(() => {
+                    masterGain.gain.value = 0.07;
+                    if (audioCtx) audioCtx.suspend();
+                }, 1000);
+            }
+            musicToggle.classList.add('muted');
+            musicToggle.textContent = '♩';
+        }
+
+        // Musik mulai saat interaksi pertama (kebijakan autoplay browser)
+        let musicInitialized = false;
+        function initMusicOnce() {
+            if (musicInitialized) return;
+            musicInitialized = true;
+            startMusic();
+        }
+
+        musicToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!musicInitialized) { initMusicOnce(); return; }
+            if (musicOn) stopMusic(); else startMusic();
+        });
+
+        document.addEventListener('click', () => { if (!musicInitialized) initMusicOnce(); }, { once: true });
+
+        // ─── EVENT LISTENERS ─────────────────────────────────
+        startGameBtn.addEventListener('click', startGame);
+        continueBtn.addEventListener('click', () => showScreen('proposal-screen'));
+        yesBtn.addEventListener('click', () => { showScreen('yes-screen'); createConfetti(); });
+        noBtn.addEventListener('click', () => showScreen('no-screen'));
+        noBtnMoving.addEventListener('mouseover', moveNoButton);
+        noBtnMoving.addEventListener('touchstart', moveNoButton);
+        restartBtn.addEventListener('click', () => showScreen('welcome-screen'));
+        backToProposalBtn.addEventListener('click', () => showScreen('proposal-screen'));
+
+        // ─── INIT ─────────────────────────────────────────────
         createStars();
     </script>
 </body>
